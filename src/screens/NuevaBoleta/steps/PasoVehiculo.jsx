@@ -1,7 +1,11 @@
-import Input  from "@components/ui/Input";
+import Input from "@components/ui/Input";
 import Select from "@components/ui/Select";
 import {
-  Card, CardHeader, CardContent, CardTitle, CardDescription,
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
+  CardDescription,
 } from "@components/ui/Card";
 
 export default function PasoVehiculo({ data, setData }) {
@@ -11,7 +15,9 @@ export default function PasoVehiculo({ data, setData }) {
     <Card>
       <CardHeader>
         <CardTitle>Paso 1: Vehículo</CardTitle>
-        <CardDescription>Complete la información requerida para continuar</CardDescription>
+        <CardDescription>
+          Complete la información requerida para continuar
+        </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-4">
@@ -45,10 +51,10 @@ export default function PasoVehiculo({ data, setData }) {
             value={data.tipoVehiculo}
             onChange={(v) => update("tipoVehiculo", v)}
             options={[
-              { value: "automovil",   label: "Automóvil"   },
+              { value: "automovil", label: "Automóvil" },
               { value: "motocicleta", label: "Motocicleta" },
-              { value: "camion",      label: "Camión"      },
-              { value: "bus",         label: "Bus"         },
+              { value: "camion", label: "Camión" },
+              { value: "bus", label: "Bus" },
             ]}
           />
           <Input

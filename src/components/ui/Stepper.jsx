@@ -9,18 +9,26 @@ const steps = [
 
 export default function Stepper({ step }) {
   return (
-    <div className="flex justify-center gap-24 lg:gap-28 mb-10"> {/* ↔ separación mayor */}
+    <div className="flex justify-center gap-24 lg:gap-28 mb-10">
       {steps.map((s) => {
-        const active = step === s.id;
+        const visited = s.id <= step;
         return (
           <div key={s.id} className="flex flex-col items-center">
             <div
-              className={`w-11 h-11 flex items-center justify-center rounded-full
-                ${active ? "bg-primary-600 text-white" : "bg-gray-200 text-gray-500"}`}
+              className={`w-11 h-11 flex items-center justify-center rounded-full border
+                ${
+                  visited
+                    ? "bg-primary-600 border-primary-600 text-white"
+                    : "bg-gray-100 border-gray-300 text-gray-500"
+                }`}
             >
               <s.icon className="w-5 h-5" />
             </div>
-            <p className={`mt-2 text-sm ${active ? "text-primary-600 font-medium" : "text-gray-500"}`}>
+            <p
+              className={`mt-2 text-sm ${
+                visited ? "text-primary-600 font-medium" : "text-gray-500"
+              }`}
+            >
               {s.label}
             </p>
           </div>

@@ -1,8 +1,15 @@
-export default function Input({ className="", ...props }) {
+export default function Input({ label, className = "", ...props }) {
   return (
-    <input
-      {...props}
-      className={`w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${className}`}
-    />
+    <div>
+      {label && (
+        <label className="block mb-1 text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
+      <input
+        {...props}
+        className={`w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder-gray-400 focus:border-primary-500 focus:ring-primary-500 ${className}`}
+      />
+    </div>
   );
 }
