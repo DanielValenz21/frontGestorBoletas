@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useRef, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   DollarSign,
@@ -41,6 +41,12 @@ export default function DetalleBoleta() {
   const nav = useNavigate();
 
   const [boleta, setBoleta] = useState(() => getBoleta(id));
+  const [showPago, setShowPago] = useState(false);
+  const [pagoFecha, setPagoFecha] = useState("");
+  const [pagoRecibo, setPagoRecibo] = useState("");
+  const [pagoError, setPagoError] = useState("");
+  const [pagoSuccess, setPagoSuccess] = useState(false);
+  const pagoRef = useRef();
 
   /* si alguien recarga y la boleta no existe → volver */
   useEffect(() => {
@@ -50,10 +56,37 @@ export default function DetalleBoleta() {
   if (!boleta) return null; // fallback rápido
 
   /* ---- UI ---- */
-  const registrarPago = () => {
-    const updated = { ...boleta, estado: "Pagada" };
+  const abrirPago = () => {
+    setPagoFecha("");
+    setPagoRecibo("");
+    setPagoError("");
+    setShowPago(true);
+    setTimeout(() => pagoRef.current?.focus(), 100);
+  };
+
+  const confirmarPago = () => {
+    if (!pagoFecha || !pagoRecibo) {
+      setPagoError("Todos los campos son obligatorios");
+      return;
+    }
+    if (isNaN(new Date(pagoFecha).getTime())) {
+      setPagoError("Fecha inválida");
+      return;
+    }
+    const updated = {
+      ...boleta,
+      estado: "Pagada",
+      fechaPago: pagoFecha,
+      reciboPago: pagoRecibo,
+    };
     setBoleta(updated);
     saveBoleta(updated);
+    setShowPago(false);
+    setPagoSuccess(true);
+    setTimeout(() => {
+      setPagoSuccess(false);
+      nav("/dashboard/boletas");
+    }, 2000);
   };
 
   return (
@@ -88,7 +121,7 @@ export default function DetalleBoleta() {
 
           <Button
             disabled={boleta.estado !== "Pendiente"}
-            onClick={registrarPago}
+            onClick={abrirPago}
           >
             <DollarSign className="w-4 h-4 mr-2" />
             Registrar Pago
@@ -196,6 +229,55 @@ export default function DetalleBoleta() {
           </Card>
         </div>
       </div>
+
+      {/* Modal de pago */}
+      {showPago && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+              onClick={() => setShowPago(false)}
+            >
+              ×
+            </button>
+            <h2 className="text-lg font-bold mb-1">Registrar Pago</h2>
+            <p className="text-gray-600 mb-4">Complete la información del pago realizado</p>
+            <div className="mb-3">
+              <label className="block text-sm font-medium mb-1">Fecha de Pago</label>
+              <input
+                ref={pagoRef}
+                type="date"
+                className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+                value={pagoFecha}
+                onChange={e => setPagoFecha(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="block text-sm font-medium mb-1">Número de Recibo</label>
+              <input
+                type="text"
+                className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+                value={pagoRecibo}
+                onChange={e => setPagoRecibo(e.target.value)}
+                placeholder="Número de recibo de pago"
+              />
+            </div>
+            {pagoError && <div className="text-red-600 text-sm mb-2">{pagoError}</div>}
+            <div className="flex justify-end gap-2 mt-4">
+              <Button variant="outline" onClick={() => setShowPago(false)}>Cancelar</Button>
+              <Button variant="success" onClick={confirmarPago}>Confirmar Pago</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mensaje de éxito */}
+      {pagoSuccess && (
+        <div className="fixed bottom-8 right-8 bg-white border shadow-lg rounded-lg p-4 z-50">
+          <div className="font-bold mb-1">Pago registrado exitosamente</div>
+          <div>La boleta ha sido marcada como pagada</div>
+        </div>
+      )}
     </>
   );
 }

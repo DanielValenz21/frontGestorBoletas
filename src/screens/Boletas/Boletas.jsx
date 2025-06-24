@@ -278,7 +278,6 @@ export default function Boletas() {
                           <Eye className="w-4 h-4" />
                         </Button>
                       </Link>
-
                       <Button variant="outline" className="p-2">
                         <Download className="w-4 h-4" />
                       </Button>
