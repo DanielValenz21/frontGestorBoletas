@@ -9,31 +9,27 @@ const steps = [
 
 export default function Stepper({ step }) {
   return (
-    <div className="flex justify-center gap-24 lg:gap-28 mb-10">
-      {steps.map((s) => {
-        const visited = s.id <= step;
-        return (
-          <div key={s.id} className="flex flex-col items-center">
-            <div
-              className={`w-11 h-11 flex items-center justify-center rounded-full border
-                ${
-                  visited
-                    ? "bg-primary-600 border-primary-600 text-white"
-                    : "bg-gray-100 border-gray-300 text-gray-500"
-                }`}
-            >
-              <s.icon className="w-5 h-5" />
-            </div>
-            <p
-              className={`mt-2 text-sm ${
-                visited ? "text-primary-600 font-medium" : "text-gray-500"
-              }`}
-            >
-              {s.label}
-            </p>
-          </div>
-        );
-      })}
-    </div>
+    <nav className="mb-8 w-full">
+      <ul className="flex justify-between w-full">
+        {steps.map((s) => {
+          const visited = s.id <= step;
+          return (
+            <li key={s.id} className="flex items-center gap-2">
+              <span
+                className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors
+                  ${visited ? "bg-primary-600 border-primary-600 text-white" : "bg-white border-gray-300 text-gray-400"}`}
+              >
+                <s.icon className="h-5 w-5" />
+              </span>
+              <span
+                className={`text-base font-medium transition-colors ${visited ? "text-primary-600" : "text-gray-500"}`}
+              >
+                {s.label}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }
