@@ -5,6 +5,8 @@ import DashboardLayout from "@layouts/DashboardLayout";
 import NuevaBoleta    from "@screens/NuevaBoleta/NuevaBoleta";
 import Boletas        from "@screens/Boletas/Boletas";
 import DetalleBoleta  from "@screens/Boletas/DetalleBoleta";
+import Reportes       from "@screens/Reportes/Reportes";
+import Administracion from "@screens/Administracion/Administracion";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -16,8 +18,8 @@ const router = createBrowserRouter([
       { path: "nueva-boleta", element: <NuevaBoleta /> },
       { path: "boletas",       element: <Boletas /> },
       { path: "boletas/:id",   element: <DetalleBoleta /> },
-      { path: "reportes",      element: <div /> },
-      { path: "admin/*",       element: <div /> },
+      { path: "reportes",      element: <Reportes /> },
+      { path: "admin/*",       element: <Administracion /> },
     ],
   },
 ]);
